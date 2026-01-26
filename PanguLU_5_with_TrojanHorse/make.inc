@@ -1,0 +1,17 @@
+COMPILE_LEVEL = -w -O3
+CUDA_COMPILE_LEVEL = -w -Wno-deprecated-gpu-targets
+
+#0201000,GPU_CUDA
+CUDA_INC = -I$(PATH_TO_CUDA_INC)
+NVCC = nvcc $(CUDA_COMPILE_LEVEL) $(COMPILE_LEVEL)
+NVCCFLAGS = $(PANGULU_FLAGS) -w -Xptxas -dlcm=cg -gencode=arch=compute_61,code=sm_61 -gencode=arch=compute_61,code=compute_61 $(CUDA_INC)
+
+#general
+CC = gcc $(COMPILE_LEVEL)
+MPICC = mpicc $(COMPILE_LEVEL)
+OPENBLAS_INC = -I$(PATH_TO_OPENBLAS_INC)
+CFLAGS = $(OPENBLAS_INC) $(CUDA_INC) -fopenmp -lpthread -lm
+MPICCFLAGS = $(CFLAGS)
+REORDERING_INC = -I../reordering_omp/include
+METIS_INC = -I$(PATH_TO_METIS_I32_INC)
+PANGULU_FLAGS = -DPANGULU_LOG_INFO -DCALCULATE_TYPE_R64 -DGPU_OPEN -DMETIS #-DPANGULU_MC64 #-DPANGULU_PERF
